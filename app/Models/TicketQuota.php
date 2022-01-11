@@ -23,7 +23,7 @@ class TicketQuota
   protected function _getJsonData($url)
   {
     $client = \Config\Services::curlrequest();
-    $this->req_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop.apitoken');
+    $this->req_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop_apitoken');
     $response = $client->request('GET', $url, $this->req_headers);
 
     return json_decode($response->getBody());
