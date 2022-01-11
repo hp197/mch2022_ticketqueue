@@ -45,24 +45,33 @@ class Webhook extends BaseController
     protected function sendQuotas(Array $_data)
     {
       $cache = \Config\Services::cache();
-      $mqtt = new \PhpMqtt\Client\MQTTClient(env('mqtt.server'), env('mqtt.port'), env('mqtt.clientid'));
-      $mqtt->connect();
+      $mqtt = new \PhpMqtt\Client\MQTTClient(env('mqtt_server'), env('mqtt_port'), env('mqtt_clientid'));
 
-      foreach ($_data as $idx => $val)
+      $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
+        ->setUsername(env('mqtt_username'))
+        ->setPassword(env('mqtt_password'))
+        ->setConnectTimeout(30);
+
+      $mqtt->connect($connectionSettings);
+
+      if ($mqtt->isConnected())
       {
-        if (($cache_data = $cache->get(md5($idx))) !== false)
+        foreach ($_data as $idx => $val)
         {
-          if (isset($cache_data['sold']) && $cache_data['sold'] == $val['sold'])
+          if (($cache_data = $cache->get(md5($idx))) !== false)
           {
-            continue;
+            if (isset($cache_data['sold']) && $cache_data['sold'] == $val['sold'])
+            {
+              continue;
+            }
           }
+
+          $_name = sprintf('mch2022/ticketshop/%s', str_replace(' ', '', $idx));
+          $mqtt->publish($_name, json_encode($val), 0, true);
+          $cache->save($idx, $val, (60 * 60 * 24));
         }
 
-        $_name = sprintf('mch2022/ticketshop/%s', str_replace(' ', '', $idx));
-        $mqtt->publish($_name, json_encode($val), 0, true);
-        $cache->save($idx, $val, (60 * 60 * 24));
+        $mqtt->disconnect();
       }
-
-      $mqtt->close();
     }
 }
