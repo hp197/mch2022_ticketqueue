@@ -45,7 +45,7 @@ class Webhook extends BaseController
     protected function sendQuotas(Array $_data)
     {
       $cache = \Config\Services::cache();
-      $mqtt = new \PhpMqtt\Client\MQTTClient(env('mqtt_server'), env('mqtt_port'), env('mqtt_clientid'));
+      $mqtt = new \PhpMqtt\Client\MqttClient(env('mqtt_server'), env('mqtt_port'), env('mqtt_clientid'));
 
       $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
         ->setUsername(env('mqtt_username'))
