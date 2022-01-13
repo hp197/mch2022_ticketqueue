@@ -68,7 +68,7 @@ class Webhook extends BaseController
 
           $_name = sprintf('mch2022/ticketshop/%s', str_replace(' ', '', $idx));
           $mqtt->publish($_name, json_encode($val), 0, true);
-          $cache->save($idx, $val, (60 * 60 * 24));
+          $cache->save(md5($idx), $val, (60 * 60 * 24));
         }
 
         $mqtt->disconnect();
