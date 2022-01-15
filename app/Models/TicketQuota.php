@@ -22,11 +22,20 @@ class TicketQuota
 
   protected function _getJsonData($url)
   {
+    $cache = \Config\Services::cache();
+
+    if (($cache_data = $cache->get(md5($url))) !== false)
+    {
+      return $cache_data;
+    }
+
     $client = \Config\Services::curlrequest();
     $this->req_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop_apitoken');
     $response = $client->request('GET', $url, $this->req_headers);
 
-    return json_decode($response->getBody());
+    $data = json_decode($response->getBody());
+    $cache->save(md5($url), $data, 60);
+    return $data;
   }
 
   protected function _getTicketQuotas()
