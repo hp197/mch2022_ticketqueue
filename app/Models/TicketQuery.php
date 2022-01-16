@@ -40,8 +40,8 @@ abstract class TicketQuery
       $_data['results'] = array_merge($_data['results'], $data['results']);
     }
 
-    $cache->save(md5($url), $data, 60);
-    return $data['results'];
+    $cache->save(md5($url), $_data, 60);
+    return $_data['results'];
   }
 
   protected function _getJsonData($url)
