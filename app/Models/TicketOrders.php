@@ -15,7 +15,7 @@ class TicketOrders extends TicketQuery
     $url = 'https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/orders/';
     $_data = $this->_getJsonData($url);
 
-    foreach ($_data->results as $order)
+    foreach ($_data as $order)
     {
       $this->_data[$order['code']] = $order;
     }

@@ -15,7 +15,7 @@ class TicketProducts extends TicketQuery
     $url = 'https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/items/';
     $_data = $this->_getJsonData($url);
 
-    foreach ($_data->results as $product)
+    foreach ($_data as $product)
     {
       $this->_data[$product['id']] = $product;
     }
