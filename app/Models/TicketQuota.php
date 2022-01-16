@@ -14,7 +14,7 @@ class TicketQuota extends TicketQuery
   protected function _getTicketQuotas()
   {
     $url = 'https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/quotas/';
-    $_data = $this->_getJsonData($url);
+    $_data = $this->_getJsonDataAll($url);
 
     foreach ($_data as $quota)
     {

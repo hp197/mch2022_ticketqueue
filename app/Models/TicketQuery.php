@@ -13,11 +13,11 @@ abstract class TicketQuery
     'user_agent'      => 'Tickershop fetcher (hp197)',
   ];
 
-  protected function _getJsonData($url)
+  protected function _getJsonDataAll($url)
   {
     $cache = \Config\Services::cache();
 
-    if (($cache_data = $cache->get(md5($url))) !== false)
+    if (($cache_data = $cache->get(md5($url))) !== null)
     {
       return $cache_data['results'];
     }
@@ -29,13 +29,10 @@ abstract class TicketQuery
       'results' => [],
     ];
 
-    $client = \Config\Services::curlrequest();
-    $this->req_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop_apitoken');
 
     while (strlen($_data['next']) > 0)
     {
-      $response = $client->request('GET', $url, $this->req_headers);
-      $data = json_decode($response->getBody(), true);
+      $data = $this->_getJsonData($_data['next']);
 
       $_data['count'] += $data['count'];
       $_data['next'] = $data['next'];
@@ -45,6 +42,15 @@ abstract class TicketQuery
 
     $cache->save(md5($url), $data, 60);
     return $data['results'];
+  }
+
+  protected function _getJsonData($url)
+  {
+    $client = \Config\Services::curlrequest();
+    $this->req_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop_apitoken');
+
+    $response = $client->request('GET', $url, $this->req_headers);
+    return json_decode($response->getBody(), true);
   }
 }
 

@@ -58,7 +58,7 @@ class Webhook extends BaseController
       {
         foreach ($_data as $idx => $val)
         {
-          if (($cache_data = $cache->get(md5($idx))) !== false)
+          if (($cache_data = $cache->get(md5($idx))) !== null)
           {
             if (isset($cache_data['sold']) && $cache_data['sold'] == $val['sold'])
             {

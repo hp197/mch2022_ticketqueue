@@ -13,7 +13,7 @@ class TicketProducts extends TicketQuery
   protected function _getTicketProducts()
   {
     $url = 'https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/items/';
-    $_data = $this->_getJsonData($url);
+    $_data = $this->_getJsonDataAll($url);
 
     foreach ($_data as $product)
     {
