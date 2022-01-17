@@ -41,7 +41,7 @@ abstract class TicketQuery
       $_data['results'] = array_merge($_data['results'], $data['results']);
     }
 
-    $cache->save(md5($url), $_data, (60 * 60 * 24));
+    $cache->save(md5($url), $_data, 60);
     return $_data['results'];
   }
 
