@@ -47,3 +47,10 @@ Options All -Indexes
 # Disable server signature start
 	ServerSignature Off
 # Disable server signature end
+
+<RequireAny>
+  #Require all denied
+  Require ip 185.227.74.44
+  Require ip 172.22.254.0/24
+</RequireAny>
+

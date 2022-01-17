@@ -37,19 +37,21 @@ abstract class TicketQuery
       $_data['count'] += $data['count'];
       $_data['next'] = $data['next'];
       $_data['previous'] = $data['previous'];
+
       $_data['results'] = array_merge($_data['results'], $data['results']);
     }
 
-    $cache->save(md5($url), $data, 60);
-    return $data['results'];
+    $cache->save(md5($url), $_data, (60 * 60 * 24));
+    return $_data['results'];
   }
 
   protected function _getJsonData($url)
   {
     $client = \Config\Services::curlrequest();
-    $this->req_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop_apitoken');
+    $_headers = $this->req_headers;
+    $_headers['headers']['Authorization'] = 'Token ' . getenv('ticketshop_apitoken');
 
-    $response = $client->request('GET', $url, $this->req_headers);
+    $response = $client->request('GET', $url, $_headers);
     return json_decode($response->getBody(), true);
   }
 }

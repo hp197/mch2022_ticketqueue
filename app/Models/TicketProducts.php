@@ -8,6 +8,7 @@ class TicketProducts extends TicketQuery
 
   public function __construct()
   {
+    $this->_getTicketProducts();
   }
 
   protected function _getTicketProducts()
