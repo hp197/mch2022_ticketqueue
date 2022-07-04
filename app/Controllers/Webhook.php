@@ -32,12 +32,11 @@ class Webhook extends BaseController
           continue;
         }
 
-        $_count = $props['available'] ? ($props['paid_orders'] + $props['pending_orders']) : $props['total_size'];
         $quotas[$tickettype] = [
           'available'        => $props['available'],
           'available_number' => $props['available_number'],
           'quota'            => $props['total_size'],
-          'sold'             => $_count,
+          'sold'             => $props['paid_orders'] + $props['pending_orders'],
         ];
       }
 
