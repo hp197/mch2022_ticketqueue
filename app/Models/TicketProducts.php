@@ -2,30 +2,24 @@
 
 namespace App\Models;
 
-class TicketQuota extends TicketQuery
+class TicketProducts extends TicketQuery
 {
   protected $_data = [];
 
   public function __construct()
   {
-    $this->_getTicketquotas();
+    $this->_getTicketProducts();
   }
 
-  protected function _getTicketQuotas()
+  protected function _getTicketProducts()
   {
-    $url = 'https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/quotas/';
+    $url = 'https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/items/';
     $_data = $this->_getJsonDataAll($url);
 
-    foreach ($_data as $quota)
+    foreach ($_data as $product)
     {
-      $this->_data[$quota['name']] = $this->_getTicketquota($quota['id']);
+      $this->_data[$product['id']] = $product;
     }
-  }
-
-  protected function _getTicketquota(int $id)
-  {
-    $url = sprintf('https://tickets.ifcat.org/api/v1/organizers/ifcat/events/mch2022/quotas/%d/availability/', $id);
-    return $this->_getJsonData($url);
   }
 
   public function __serialize(): array
